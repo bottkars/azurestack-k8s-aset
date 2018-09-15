@@ -486,18 +486,20 @@
         "name": "vmLoopNode"
       },
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'), copyIndex(2),'/extensions/resetpassword')]"
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'), copyIndex(2),'/extensions/resetpassword')]",
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/installk8s')]",
       ],
       "location": "[resourceGroup().location]",
-      "name": "[concat(parameters('VMNamePrefix'), copyIndex(2), '/configurenode')]",
+      "name": "[concat(parameters('VMNamePrefix'), copyIndex(2), '/k8s_pre')]",
       "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
+        "publisher": "Microsoft.Azure.Extensions",
         "settings": {
+          "timestamp": 1,
           "commandToExecute": "./k8s_pre.sh",
           "fileUris": [ "[concat(parameters('_artifactsLocation'),'/scripts/k8s_pre.sh')]" ]
         },
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.4",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true
       },
       "type": "Microsoft.Compute/virtualMachines/extensions"
@@ -510,8 +512,9 @@
         "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/resetpassword')]"
       ],
       "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
+        "publisher": "Microsoft.Azure.Extensions",
         "settings": {
+          "timestamp": 1,
           "fileUris": [
             "[concat(parameters('_artifactsLocation'),'/scripts/k8s_pre.sh')]",
             "[concat(parameters('_artifactsLocation'),'/scripts/k8s.sh')]"
@@ -520,7 +523,7 @@
         "protectedSettings": {
           "commandToExecute": "[concat('bash k8s.sh --DISKNUM ',parameters('dataDiskCount'),' --NODENUM ',parameters('numberOfInstances'),' --NODEPREFIX ',parameters('VMNamePrefix'),' --k8sUSER ',parameters('adminUsername'),' --k8sPASSWORD ',parameters('adminPassword'))]"
         },
-        "type": "CustomScriptForLinux",
+        "type": "CustomScript",
         "typeHandlerVersion": "2.0",
         "autoUpgradeMinorVersion": true
       },
