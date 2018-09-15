@@ -45,9 +45,9 @@ subjects:
   name: kubernetes-dashboard
   namespace: kube-system
 EOF
-
-
-
+echo '#DATA#'
+echo $(kubeadm token list)
+echo '#DATA#'
 #kubectl apply -f /root/kube-dashboard-rbac.yml --kubeconfig /etc/kubernetes/admin.conf
 #kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml --kubeconfig /etc/kubernetes/admin.conf
 #kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/rbac/heapster-rbac.yaml  --kubeconfig /etc/kubernetes/admin.conf

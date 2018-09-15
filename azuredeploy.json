@@ -507,7 +507,7 @@
     {
       "apiVersion": "2016-03-30",
       "location": "[resourceGroup().location]",
-      "name": "[concat(parameters('VMNamePrefix'),'1','/installk8s')]",
+      "name": "installk8s",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/resetpassword')]"
       ],
@@ -521,10 +521,10 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('bash k8s.sh --DISKNUM ',parameters('dataDiskCount'),' --NODENUM ',parameters('numberOfInstances'),' --NODEPREFIX ',parameters('VMNamePrefix'),' --k8sUSER ',parameters('adminUsername'),' --k8sPASSWORD ',parameters('adminPassword'))]"
+          "commandToExecute": "bash k8s.sh]"
         },
         "type": "CustomScript",
-        "typeHandlerVersion": "2.0",
+        "typeHandlerVersion": "2.0.6",
         "autoUpgradeMinorVersion": true
       },
       "type": "Microsoft.Compute/virtualMachines/extensions"
@@ -534,6 +534,10 @@
     "fileruris": {
       "value": "reference('fileUris')",
       "type":  "string"
+    },
+    "jointoken": {
+      "value": "[split(string(reference('installk8s').outputs.instanceView.value.statuses[0].message), '#DATA#')[1]]",
+      "type": "string"
     }
   }
 
