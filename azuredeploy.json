@@ -322,7 +322,6 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-      "condition": "[equals(copyIndex(1),'1')]",
       "name": "[concat(variables('publicLBName'), '/6443')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
@@ -372,8 +371,8 @@
                   "id": "[concat(variables('publiclbID'), '/inboundNatRules/ssh-VM', copyIndex(1))]"
                 },
                 {  
-                  "condition": "[equals(copyIndex(1),'1')]",
-                  "id": "[concat(variables('publiclbID'), '/inboundNatRules/6443')]"
+
+                  "id": "[if(equals(copyIndex(1),'1'),concat(variables('publiclbID'), '/inboundNatRules/6443'),json('null'))]"
                 }
               ]
             }
