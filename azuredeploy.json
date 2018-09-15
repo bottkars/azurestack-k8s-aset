@@ -369,10 +369,6 @@
               "loadBalancerInboundNatRules": [
                 {
                   "id": "[concat(variables('publiclbID'), '/inboundNatRules/ssh-VM', copyIndex(1))]"
-                },
-                {  
-
-                  "id": "[if(equals(copyIndex(1),'1'),concat(variables('publiclbID'), '/inboundNatRules/6443'),json('null'))]"
                 }
               ]
             }
