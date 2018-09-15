@@ -507,7 +507,7 @@
     {
       "apiVersion": "2016-03-30",
       "location": "[resourceGroup().location]",
-      "name": "installk8s",
+      "name": "[concat(parameters('VMNamePrefix'), 1, '/installk8s')]",
       "dependsOn": [
        "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/resetpassword')]"
       ],
@@ -536,7 +536,7 @@
       "type":  "string"
     },
     "jointoken": {
-      "value": "[split(string(reference('installk8s').outputs.instanceView.value.statuses[0].message), '#DATA#')[1]]",
+      "value": "[split(string(concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/installk8s').outputs.instanceView.value.statuses[0].message), '#DATA#')[1]]",
       "type": "string"
     }
   }
