@@ -88,7 +88,7 @@
       ],
       "defaultValue": "Standard_A4",
       "metadata": {
-        "description": "This is the size of your k8s Nodes. Minimum is A6/D4"
+        "description": "This is the size of your k8s Nodes"
       },
       "type": "string"
     },
@@ -320,6 +320,24 @@
       }
     },
     {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "[concat(variables('publicLBName'), '/6443')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/loadBalancers/', variables('publiclbName'))]"
+      ],
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[variables('publiclbFEConfigID')]"
+        },
+        "protocol": "tcp",
+        "frontendPort": 6443,
+        "backendPort": 6443,
+        "enableFloatingIP": false
+      }
+    },    
+    {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(variables('NICPrefix'), parameters('vmNamePrefix'), copyIndex(1))]",
       "apiVersion": "2015-06-15",
@@ -351,6 +369,10 @@
               "loadBalancerInboundNatRules": [
                 {
                   "id": "[concat(variables('publiclbID'), '/inboundNatRules/ssh-VM', copyIndex(1))]"
+                },
+                {  
+                  "condition": "[equals(copyIndex(1),'1')]",
+                  "id": "[concat(variables('publiclbID'), '/inboundNatRules/6443')]"
                 }
               ]
             }
