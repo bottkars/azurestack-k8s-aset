@@ -67,7 +67,16 @@
     },
     "vmSize": {
       "allowedValues": [
+        "Standard_A0",
+        "Standard_A1",
+        "Standard_A2",
+        "Standard_A3",
+        "Standard_A4",
+        "Standard_A5",
         "Standard_A6",
+        "Standard_D1",
+        "Standard_D2",
+        "Standard_D3",
         "Standard_D4",
         "Standard_D12",
         "Standard_D4_v2",
@@ -77,7 +86,7 @@
         "Standard_DS4_v2",
         "Standard_DS12_v2"
       ],
-      "defaultValue": "Standard_D4",
+      "defaultValue": "Standard_A4",
       "metadata": {
         "description": "This is the size of your k8s Nodes. Minimum is A6/D4"
       },
