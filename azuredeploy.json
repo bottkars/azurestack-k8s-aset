@@ -487,7 +487,7 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'), copyIndex(2),'/extensions/resetpassword')]",
-        "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/installk8s')]",
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/installk8s')]"
       ],
       "location": "[resourceGroup().location]",
       "name": "[concat(parameters('VMNamePrefix'), copyIndex(2), '/k8s_pre')]",
@@ -509,7 +509,7 @@
       "location": "[resourceGroup().location]",
       "name": "installk8s",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/resetpassword')]"
+       "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/resetpassword')]"
       ],
       "properties": {
         "publisher": "Microsoft.Azure.Extensions",
@@ -521,7 +521,7 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "bash k8s.sh]"
+          "commandToExecute": "bash k8s.sh"
         },
         "type": "CustomScript",
         "typeHandlerVersion": "2.0.6",
