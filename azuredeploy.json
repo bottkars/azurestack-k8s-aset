@@ -322,6 +322,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "condition": "[equals(copyIndex(1),'1')]",
       "name": "[concat(variables('publicLBName'), '/6443')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
