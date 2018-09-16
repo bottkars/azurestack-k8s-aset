@@ -475,7 +475,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "apiVersion": "2016-03-30",
+      "apiVersion": "2017-03-30",
       "copy": {
         "count": "[parameters('numberOfInstances')]",
         "mode": "Parallel",
@@ -528,7 +528,7 @@
       "type": "Microsoft.Compute/virtualMachines/extensions"
     },
     {
-      "apiVersion": "2016-03-30",
+      "apiVersion": "2017-03-30",
       "location": "[resourceGroup().location]",
       "name": "[concat(parameters('VMNamePrefix'), 1, '/installk8s')]",
       "dependsOn": [
