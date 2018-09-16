@@ -488,7 +488,7 @@
       }
     },
     {
-      "apiVersion": "2016-03-30",
+      "apiVersion": "2017-03-30",
       "copy": {
         "count": "[sub(parameters('numberOfInstances'),1)]",
         "mode": "Parallel",
