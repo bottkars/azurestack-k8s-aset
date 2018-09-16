@@ -425,7 +425,6 @@
             "version": "[variables('osImageVersion')]"
           },
           "osDisk": {
-            "name": "[concat(parameters('vmNamePrefix'), copyIndex(1),'osdisk')]",
             "managedDisk": {
               "storageAccountType": "Standard_LRS"
             },
@@ -440,7 +439,6 @@
                 "managedDisk": {
                   "storageAccountType": "Standard_LRS"
                 },
-                "name": "[concat(parameters('vmNamePrefix'), copyIndex(1),'-data-', copyIndex('dataDisks'), '.vhd')]",
                 "lun": "[copyIndex('dataDisks')]",
                 "createOption": "Empty",
                 "diskSizeGB": "[parameters('dataDiskSize')]"
