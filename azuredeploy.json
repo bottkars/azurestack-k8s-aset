@@ -149,7 +149,6 @@
   },
   "variables": {
     "availabilitySetName": "[toLower(concat('k8saSet-', resourceGroup().name))]",
-    "storageAccountType": "Standard_LRS",
     "vmSize": "[parameters('vmSize')]",
     "dnsPrefix": "[parameters('dnsPrefix')]",
     "osImageVersion": "latest",
@@ -174,18 +173,6 @@
     "diagnosticsStorageAccountType": "Standard_LRS"
   },
   "resources": [
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('storageName')]",
-      "apiVersion": "2016-01-01",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "accountType": "[variables('storageAccountType')]"
-      },
-      "dependsOn": [
-        "[variables('publiclbName')]"
-      ]
-    },
     {
       "name": "[variables('diagnosticsStorageAccountName')]",
       "type": "Microsoft.Storage/storageAccounts",
@@ -418,14 +405,13 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[concat(parameters('vmNamePrefix'), copyIndex(1))]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-30",
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "virtualMachineLoop",
         "count": "[parameters('numberOfInstances')]"
       },
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/',variables('storageName'))]",
         "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('NICPrefix'), parameters('vmNamePrefix'), copyIndex(1)))]",
         "[concat('Microsoft.Compute/availabilitySets/', variables('availabilitySetName'))]"
       ],
@@ -450,8 +436,8 @@
           },
           "osDisk": {
             "name": "osdisk",
-            "vhd": {
-              "uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', variables('storageName')),providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).primaryEndpoints.blob, variables('vmContainerName'),'/', parameters('vmNamePrefix'), copyIndex(1),'-osdisk.vhd')]"
+            "managedDisk": {
+              "storageAccountType": "Premium_LRS"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -461,9 +447,6 @@
               "name": "dataDisks",
               "count": "[parameters('dataDiskCount')]",
               "input": {
-                "vhd": {
-                  "uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', variables('storageName')),providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).primaryEndpoints.blob, variables('vmContainerName'),'/', parameters('vmNamePrefix'), copyIndex(1),'-data-', copyIndex('dataDisks'), '.vhd')]"
-                },
                 "name": "[concat(parameters('vmNamePrefix'), copyIndex(1),'-data-', copyIndex('dataDisks'), '.vhd')]",
                 "lun": "[copyIndex('dataDisks')]",
                 "createOption": "Empty",
