@@ -205,11 +205,11 @@
     {
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
-      "apiVersion": "2016-03-30",
+      "apiVersion": "2017-03-30",
       "location": "[resourceGroup().location]",
       "properties": {
         "platformFaultDomainCount": 3,
-        "platformUpdateDomainCount": 5,
+        "platformUpdateDomainCount": 5
       },
       "sku": {
         "name": "Aligned"
