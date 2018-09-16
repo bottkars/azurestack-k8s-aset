@@ -29,7 +29,7 @@
         8
       ],
       "metadata": {
-        "description": "Number of VMs to deploy, limit 5 since this sample is using a single storage account"
+        "description": "Number of VMs to deploy"
       }
     },
     "dataDiskCount": {
@@ -447,6 +447,9 @@
               "name": "dataDisks",
               "count": "[parameters('dataDiskCount')]",
               "input": {
+                "managedDisk": {
+                  "storageAccountType": "Premium_LRS"
+                },                
                 "name": "[concat(parameters('vmNamePrefix'), copyIndex(1),'-data-', copyIndex('dataDisks'), '.vhd')]",
                 "lun": "[copyIndex('dataDisks')]",
                 "createOption": "Empty",
