@@ -113,10 +113,10 @@
     },
     "osImageSKU": {
       "type": "string",
-      "defaultValue": "7.4",
+      "defaultValue": "7.5",
       "allowedValues": [
         "Centos-7.4",
-        "7.4"
+        "7.5"
       ],
       "metadata": {
         "description": "The Linux version for the VM. Use 7.4 for default Marketplace"
@@ -403,7 +403,8 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('NICPrefix'), parameters('vmNamePrefix'), copyIndex(1)))]",
-        "[concat('Microsoft.Compute/availabilitySets/', variables('availabilitySetName'))]"
+        "[concat('Microsoft.Compute/availabilitySets/', variables('availabilitySetName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/',variables('diagnosticsStorageAccountName'))]"
       ],
       "properties": {
         "availabilitySet": {
