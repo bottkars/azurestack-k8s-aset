@@ -464,7 +464,7 @@
       "properties": {
         "publisher": "Microsoft.OSTCExtensions",
         "type": "VMAccessForLinux",
-        "typeHandlerVersion": "2.0",
+        "typeHandlerVersion": "1.4",
         "autoUpgradeMinorVersion": true,
         "settings": {},
         "protectedSettings": {
