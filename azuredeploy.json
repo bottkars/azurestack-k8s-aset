@@ -135,14 +135,14 @@
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
-          "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+        "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
       },
       "defaultValue": "https://raw.githubusercontent.com/bottkars/azurestack-k8s-aset"
     },
     "_artifactsLocationSasToken": {
       "type": "securestring",
       "metadata": {
-          "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated."
+        "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated."
       },
       "defaultValue": ""
     }
@@ -336,15 +336,15 @@
         "backendPort": 6443,
         "enableFloatingIP": false
       }
-    },    
+    },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('NICPrefix'), parameters('vmNamePrefix'), copyIndex(1))]",
+      "name": "[concat(variables('NICPrefix'), parameters('vmNamePrefix'), copyIndex(2))]",
       "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "nicLoop",
-        "count": "[parameters('numberOfInstances')]"
+        "count": "[sub(parameters('numberOfInstances'),1)]"
       },
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
@@ -369,6 +369,45 @@
               "loadBalancerInboundNatRules": [
                 {
                   "id": "[concat(variables('publiclbID'), '/inboundNatRules/ssh-VM', copyIndex(1))]"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(variables('NICPrefix'), parameters('vmNamePrefix'), '1')]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
+        "[concat('Microsoft.Network/loadBalancers/', variables('publicLBName'))]",
+        "[concat('Microsoft.Network/loadBalancers/', variables('publicLBName'), '/inboundNatRules/', '6443')]",
+        "[concat('Microsoft.Network/loadBalancers/', variables('publicLBName'), '/inboundNatRules/', 'ssh-VM1')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "10.0.0.4",
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(variables('publiclbID'), '/backendAddressPools/LoadBalancerBackend')]"
+                }
+              ],
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(variables('publiclbID'), '/inboundNatRules/ssh-VM1')]"
+                },
+                {
+                  "id": "[concat(variables('publiclbID'), '/inboundNatRules/6443')]"
                 }
               ]
             }
@@ -492,7 +531,9 @@
         "settings": {
           "timestamp": 1,
           "commandToExecute": "./k8s_pre.sh",
-          "fileUris": [ "[concat(parameters('_artifactsLocation'),'/scripts/k8s_pre.sh')]" ]
+          "fileUris": [
+            "[concat(parameters('_artifactsLocation'),'/scripts/k8s_pre.sh')]"
+          ]
         },
         "type": "CustomScript",
         "typeHandlerVersion": "2.0",
@@ -505,7 +546,7 @@
       "location": "[resourceGroup().location]",
       "name": "[concat(parameters('VMNamePrefix'), 1, '/installk8s')]",
       "dependsOn": [
-       "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/resetpassword')]"
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/resetpassword')]"
       ],
       "properties": {
         "publisher": "Microsoft.Azure.Extensions",
@@ -529,14 +570,11 @@
   "outputs": {
     "fileruris": {
       "value": "reference('fileUris')",
-      "type":  "string"
+      "type": "string"
     },
     "jointoken": {
       "value": "[split(string(concat('Microsoft.Compute/virtualMachines/', parameters('VMNamePrefix'),'1','/extensions/installk8s').outputs.instanceView.value.statuses[0].message), '#DATA#')[1]]",
       "type": "string"
     }
   }
-
-
- 
 }
