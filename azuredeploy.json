@@ -427,7 +427,7 @@
           "osDisk": {
             "name": "osdisk",
             "managedDisk": {
-              "storageAccountType": "Premium_LRS"
+              "storageAccountType": "Standard_LRS"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -438,7 +438,7 @@
               "count": "[parameters('dataDiskCount')]",
               "input": {
                 "managedDisk": {
-                  "storageAccountType": "Premium_LRS"
+                  "storageAccountType": "Standard_LRS"
                 },
                 "name": "[concat(parameters('vmNamePrefix'), copyIndex(1),'-data-', copyIndex('dataDisks'), '.vhd')]",
                 "lun": "[copyIndex('dataDisks')]",
