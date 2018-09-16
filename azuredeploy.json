@@ -425,7 +425,7 @@
             "version": "[variables('osImageVersion')]"
           },
           "osDisk": {
-            "name": "osdisk",
+            "name": "[concat(parameters('vmNamePrefix'), copyIndex(1),'osdisk')]",
             "managedDisk": {
               "storageAccountType": "Standard_LRS"
             },
