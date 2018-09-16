@@ -357,7 +357,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat('10.0.0.',copyIndex(4))]",
+              "privateIPAddress": "[concat('10.0.0.',copyIndex(5))]",
               "subnet": {
                 "id": "[variables('subnetRef')]"
               },
