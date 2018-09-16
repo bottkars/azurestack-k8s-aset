@@ -209,7 +209,10 @@
       "location": "[resourceGroup().location]",
       "properties": {
         "platformFaultDomainCount": 3,
-        "platformUpdateDomainCount": 5
+        "platformUpdateDomainCount": 5,
+      },
+      "sku": {
+        "name": "Aligned"
       }
     },
     {
@@ -446,7 +449,7 @@
               "input": {
                 "managedDisk": {
                   "storageAccountType": "Premium_LRS"
-                },                
+                },
                 "name": "[concat(parameters('vmNamePrefix'), copyIndex(1),'-data-', copyIndex('dataDisks'), '.vhd')]",
                 "lun": "[copyIndex('dataDisks')]",
                 "createOption": "Empty",
@@ -464,7 +467,7 @@
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": "true",
+            "enabled": true,
             "storageUri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName')),providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).primaryEndpoints.blob)]"
           }
         }
